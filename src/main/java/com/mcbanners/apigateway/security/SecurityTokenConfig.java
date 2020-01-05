@@ -1,5 +1,6 @@
 package com.mcbanners.apigateway.security;
 
+import com.mcbanners.apigateway.OpenRoute;
 import com.mcbanners.apigateway.security.jwt.JwtHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
@@ -29,7 +30,8 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterAfter(new JwtTokenAuthenticationFilter(jwtHandler), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, jwtHandler.getUri()).permitAll() // anyone accessing user-service is ok
-                .anyRequest().authenticated();
+                .antMatchers(jwtHandler.getUri()).permitAll() // permit all user api
+                .antMatchers(OpenRoute.ants()).permitAll() // permit ants defined as Open
+                .anyRequest().authenticated(); // anything else requires access token
     }
 }

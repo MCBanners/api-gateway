@@ -14,7 +14,7 @@ public class JwtHandler {
 
     @Value("${security.jwt.uri:/user/**}")
     private String uri;
-    @Value("${security.jwt.header:Authorization")
+    @Value("${security.jwt.header:Authorization}")
     private String header;
     @Value("${security.jwt.prefix:Bearer }")
     private String prefix;
