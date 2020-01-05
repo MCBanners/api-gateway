@@ -1,7 +1,6 @@
 package com.mcbanners.apigateway;
 
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 public enum OpenRoute {
     BANNER_SERVICE("/banner/svc/**"),
