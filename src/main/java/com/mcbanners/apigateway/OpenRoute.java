@@ -6,7 +6,8 @@ public enum OpenRoute {
     BANNER_SERVICE("/banner/svc/**"),
     BANNER_SERVER("/banner/server/**"),
     BANNER_RESOURCE("/banner/resource/**"),
-    BANNER_AUTHOR("/banner/author/**");
+    BANNER_AUTHOR("/banner/author/**"),
+    MC("/mc/**");
 
     private final String ant;
 
