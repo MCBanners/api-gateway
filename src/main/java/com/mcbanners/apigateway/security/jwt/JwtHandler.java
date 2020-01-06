@@ -21,8 +21,6 @@ public class JwtHandler {
     private String header;
     @Value("${security.jwt.prefix:Bearer }")
     private String prefix;
-    @Value("${security.jwt.expiration:#{24 * 60 * 60}}")
-    private long expiration;
     @Value("${security.jwt.secret:secret}")
     private String secret;
 
@@ -46,17 +44,5 @@ public class JwtHandler {
 
     public String getPrefix() {
         return prefix;
-    }
-
-    public long getExpiration() {
-        return expiration;
-    }
-
-    public String getSecret() {
-        return secret;
-    }
-
-    public JwtParser getParser() {
-        return parser;
     }
 }

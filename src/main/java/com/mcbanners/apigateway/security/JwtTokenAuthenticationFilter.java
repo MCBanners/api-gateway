@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.UUID;
 
 public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
     private final JwtHandler jwtHandler;
@@ -26,12 +27,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String header = request.getHeader(jwtHandler.getHeader());
 
-        System.out.println(jwtHandler.getHeader());
-
-        System.out.println("HEADER IS: " + header);
-
         if (header == null || !header.startsWith(jwtHandler.getPrefix())) {
-            System.out.println("No auth token specified");
             filterChain.doFilter(request, response);
             return;
         }
@@ -39,15 +35,17 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
         String token = header.replace(jwtHandler.getPrefix(), "");
         try {
             Claims claims = jwtHandler.parse(token);
+
+            UUID id = UUID.fromString(claims.get("id", String.class));
             String username = claims.getSubject();
+
             if (username != null) {
+                AuthedUserInformation user = new AuthedUserInformation(id, username);
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                        username, null, Collections.emptyList()
+                        user, null, Collections.emptyList()
                 );
 
                 SecurityContextHolder.getContext().setAuthentication(auth);
-
-                System.out.println("Gateway auth success! :)");
             }
         } catch (Exception ignored) {
             SecurityContextHolder.clearContext();
