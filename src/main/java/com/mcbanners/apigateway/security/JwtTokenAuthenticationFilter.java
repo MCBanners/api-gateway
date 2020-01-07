@@ -13,12 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
-import java.util.UUID;
 
 public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
     private final JwtHandler jwtHandler;
 
-    @Autowired
     public JwtTokenAuthenticationFilter(JwtHandler jwtHandler) {
         this.jwtHandler = jwtHandler;
     }
@@ -35,14 +33,10 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
         String token = header.replace(jwtHandler.getPrefix(), "");
         try {
             Claims claims = jwtHandler.parse(token);
-
-            UUID id = UUID.fromString(claims.get("id", String.class));
             String username = claims.getSubject();
-
             if (username != null) {
-                AuthedUserInformation user = new AuthedUserInformation(id, username);
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                        user, null, Collections.emptyList()
+                        username, null, Collections.emptyList()
                 );
 
                 SecurityContextHolder.getContext().setAuthentication(auth);
