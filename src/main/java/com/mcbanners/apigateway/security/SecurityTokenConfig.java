@@ -32,6 +32,7 @@ public class SecurityTokenConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(jwtHandler.getUri()).permitAll() // permit all user api
                 .antMatchers(OpenRoute.ants()).permitAll() // permit ants defined as Open
+                .requestMatchers((req) -> req.getMethod().equalsIgnoreCase("options")).permitAll()
                 .anyRequest().authenticated(); // anything else requires access token
     }
 }
