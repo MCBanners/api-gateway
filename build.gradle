@@ -16,7 +16,7 @@ configurations {
 }
 
 bootJar {
-	archiveFileName = "api-gateway.jar"
+	archiveFileName = "gateway.jar"
 }
 
 
