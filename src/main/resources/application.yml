@@ -33,12 +33,6 @@ spring:
             maxAge: 3600
 
       routes:
-      - id: localService
-        predicates:
-        - Path=/validate
-        filters:
-          - TokenValidationFilter
-
       - id: userService
         uri: lb://USER-SERVICE
         predicates:
@@ -53,7 +47,6 @@ spring:
         predicates:
         - Path=/banner/**
         filters:
-        - TokenValidationFilter
         - StripPrefix=1
         - RemoveRequestHeader=Cookie
         - RemoveRequestHeader=Set-Cookie
@@ -69,4 +62,5 @@ spring:
         - RemoveRequestHeader=Set-Cookie
 
       default-filters:
+        - TokenValidationFilter
         - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
