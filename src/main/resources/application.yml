@@ -1,0 +1,52 @@
+server:
+  port: 8100
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+    service-url:
+      default-zone: http://eureka:8761/eureka
+
+security:
+  jwt:
+    secret: ${GATEWAY_JWT_SECRET}
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      httpclient:
+        connect-timeout: 30000
+        response-timeout: 10s
+
+      routes:
+      - id: userService
+        uri: lb://user-service
+        predicates:
+        - Path=/user/**
+        filters:
+          - RemoveRequestHeader=Authorization
+          - RemoveRequestHeader=Cookie
+          - RemoveRequestHeader=Set-Cookie
+
+      - id: bannerService
+        uri: lb://banner-service
+        predicates:
+        - Path=/banner/**
+        filters:
+        - StripPrefix=1
+        - RemoveRequestHeader=Cookie
+        - RemoveRequestHeader=Set-Cookie
+
+      - id: minecraftService
+        uri: lb//mc-service
+        predicates:
+        - Path=/mc/**
+        filters:
+        - StripPrefix=1
+        - RemoveRequestHeader=Authorization
+        - RemoveRequestHeader=Cookie
+        - RemoveRequestHeader=Set-Cookie

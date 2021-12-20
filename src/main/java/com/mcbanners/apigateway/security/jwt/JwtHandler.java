@@ -15,7 +15,7 @@ import javax.crypto.SecretKey;
 public class JwtHandler {
     private JwtParser parser;
 
-    @Value("${security.jwt.uri:/user/**}")
+    @Value(value = "${security.jwt.uri:/user/**}")
     private String uri;
     @Value("${security.jwt.header:Authorization}")
     private String header;
