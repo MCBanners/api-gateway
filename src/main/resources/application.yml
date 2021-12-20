@@ -45,6 +45,7 @@ spring:
         - StripPrefix=1
         - RemoveRequestHeader=Cookie
         - RemoveRequestHeader=Set-Cookie
+        - TokenValidationFilter
 
       - id: minecraftService
         uri: lb//mc-service
