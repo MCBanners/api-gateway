@@ -30,10 +30,8 @@ dependencies {
 	implementation platform('org.springframework.cloud:spring-cloud-dependencies:2021.0.0')
 
 	// spring dependencies
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 	implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	// jwt dependencies

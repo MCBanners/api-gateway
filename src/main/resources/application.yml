@@ -12,6 +12,11 @@ security:
   jwt:
     secret: ${GATEWAY_JWT_SECRET}
 
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty.http.client: DEBUG
+
 spring:
   application:
     name: api-gateway
