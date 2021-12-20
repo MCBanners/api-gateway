@@ -24,6 +24,14 @@ spring:
         locator:
           enabled: true
 
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            maxAge: 3600
+
       routes:
       - id: userService
         uri: lb://USER-SERVICE
