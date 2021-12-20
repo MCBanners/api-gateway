@@ -1,5 +1,6 @@
 package com.mcbanners.apigateway.security;
 
+import com.mcbanners.apigateway.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -33,14 +34,14 @@ public class TokenValidationFilter extends AbstractGatewayFilterFactory<Void> {
 
             // if it's a preflight, let it through
             if (req.getMethod() == HttpMethod.OPTIONS) {
-                System.out.println("Letting preflight pass through filter!");
-                return chain.filter(exchange);
+                Log.info("Letting preflight pass through filter!");
+                return pass(exchange, chain);
             }
 
             String path = req.getPath().pathWithinApplication().value();
 
             for (String antPath : ProtectedRoute.getAntPaths()) {
-                System.out.printf("Token validation checking path %s against %s%n", path, antPath);
+                Log.info("Token validation checking path %s against %s", path, antPath);
 
                 if (pathMatcher.match(antPath, path)) {
                     // if the accessed path is protected, then we'll validate the token
@@ -48,10 +49,15 @@ public class TokenValidationFilter extends AbstractGatewayFilterFactory<Void> {
                 }
             }
 
-            System.out.println("Did not pass request through token validation filter. Passing through.");
+            Log.info("Did not pass request through token validation filter. Passing through.");
+
             // otherwise, we'll just let it through
-            return chain.filter(exchange);
+            return pass(exchange, chain);
         };
+    }
+
+    private Mono<Void> pass(ServerWebExchange exchange, GatewayFilterChain chain) {
+        return chain.filter(exchange.mutate().request(exchange.getRequest().mutate().build()).build());
     }
 
     private Mono<Void> validateToken(ServerWebExchange exchange, GatewayFilterChain chain) {
