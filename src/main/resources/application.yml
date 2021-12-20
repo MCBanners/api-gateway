@@ -33,6 +33,12 @@ spring:
             maxAge: 3600
 
       routes:
+      - id: localService
+        predicates:
+        - Path=/validate
+        filters:
+          - TokenValidationFilter
+
       - id: userService
         uri: lb://USER-SERVICE
         predicates:
