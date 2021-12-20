@@ -27,6 +27,10 @@ spring:
         connect-timeout: 30000
         response-timeout: 10s
 
+      discovery:
+        locator:
+          enabled: true
+
       routes:
       - id: userService
         uri: lb://user-service
