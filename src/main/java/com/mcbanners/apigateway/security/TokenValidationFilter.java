@@ -3,7 +3,7 @@ package com.mcbanners.apigateway.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
-import org.springframework.cloud.gateway.filter.factory.GatewayFilterFactory;
+import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -14,12 +14,14 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 @Component
-public class TokenValidationFilter implements GatewayFilterFactory<Void> {
+public class TokenValidationFilter extends AbstractGatewayFilterFactory<Void> {
     private final JwtHandler jwtHandler;
     private final AntPathMatcher pathMatcher;
 
     @Autowired
     public TokenValidationFilter(JwtHandler jwtHandler) {
+        super(Void.class);
+
         this.jwtHandler = jwtHandler;
         this.pathMatcher = new AntPathMatcher();
     }
