@@ -32,6 +32,10 @@ spring:
             allowedHeaders: "*"
             maxAge: 3600
 
+      default-filters:
+        - TokenValidationFilter
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+
       routes:
       - id: userService
         uri: lb://USER-SERVICE
@@ -60,7 +64,3 @@ spring:
         - RemoveRequestHeader=Authorization
         - RemoveRequestHeader=Cookie
         - RemoveRequestHeader=Set-Cookie
-
-      default-filters:
-        - TokenValidationFilter
-        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
