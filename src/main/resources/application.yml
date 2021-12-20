@@ -33,7 +33,7 @@ spring:
 
       routes:
       - id: userService
-        uri: lb://user-service
+        uri: lb://USER-SERVICE
         predicates:
         - Path=/user/**
         filters:
@@ -42,7 +42,7 @@ spring:
           - RemoveRequestHeader=Set-Cookie
 
       - id: bannerService
-        uri: lb://banner-service
+        uri: lb://BANNER-SERVICE
         predicates:
         - Path=/banner/**
         filters:
@@ -52,7 +52,7 @@ spring:
         - TokenValidationFilter
 
       - id: minecraftService
-        uri: lb://mc-service
+        uri: lb://MC-SERVICE
         predicates:
         - Path=/mc/**
         filters:
