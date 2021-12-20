@@ -14,12 +14,12 @@ import javax.crypto.SecretKey;
 public class JwtHandler {
     private JwtParser parser;
 
-    @Value("${security.jwt.uri:/user/**}")
-    private String uri;
     @Value("${security.jwt.header:Authorization}")
     private String header;
+
     @Value("${security.jwt.prefix:Bearer }")
     private String prefix;
+
     @Value("${security.jwt.secret:secret}")
     private String secret;
 
@@ -31,10 +31,6 @@ public class JwtHandler {
 
     public void parse(String token) throws JwtException {
         parser.parseClaimsJws(token).getBody();
-    }
-
-    public String getUri() {
-        return uri;
     }
 
     public String getHeader() {

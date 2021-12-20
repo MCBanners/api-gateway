@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.factory.GatewayFilterFactory;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -25,7 +27,14 @@ public class TokenValidationFilter implements GatewayFilterFactory<Void> {
     @Override
     public GatewayFilter apply(Void config) {
         return (exchange, chain) -> {
-            String path = exchange.getRequest().getPath().pathWithinApplication().value();
+            ServerHttpRequest req = exchange.getRequest();
+
+            // if it's a preflight, let it through
+            if (req.getMethod() == HttpMethod.OPTIONS) {
+                return chain.filter(exchange);
+            }
+
+            String path = req.getPath().pathWithinApplication().value();
 
             for (String antPath : ProtectedRoute.getAntPaths()) {
                 if (pathMatcher.match(antPath, path)) {
