@@ -33,18 +33,22 @@ public class TokenValidationFilter extends AbstractGatewayFilterFactory<Void> {
 
             // if it's a preflight, let it through
             if (req.getMethod() == HttpMethod.OPTIONS) {
+                System.out.println("Letting preflight pass through filter!");
                 return chain.filter(exchange);
             }
 
             String path = req.getPath().pathWithinApplication().value();
 
             for (String antPath : ProtectedRoute.getAntPaths()) {
+                System.out.printf("Token validation checking path %s against %s%n", path, antPath);
+
                 if (pathMatcher.match(antPath, path)) {
                     // if the accessed path is protected, then we'll validate the token
                     return validateToken(exchange, chain);
                 }
             }
 
+            System.out.println("Did not pass request through token validation filter. Passing through.");
             // otherwise, we'll just let it through
             return chain.filter(exchange);
         };

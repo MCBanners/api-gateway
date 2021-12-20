@@ -24,6 +24,12 @@ spring:
         locator:
           enabled: true
 
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+
       routes:
       - id: userService
         uri: lb://USER-SERVICE
