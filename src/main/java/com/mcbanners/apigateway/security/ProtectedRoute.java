@@ -3,7 +3,7 @@ package com.mcbanners.apigateway.security;
 import java.util.Arrays;
 
 public enum ProtectedRoute {
-    GATEWAY_VALIDATE("/validate"),
+    USER_SESSION_VALIDATE("/user/session/validate"),
     BANNER_SAVE("/banner/saved/save/**"),
     BANNER_MANAGE_SAVED("/banner/manage_saved/**");
 
