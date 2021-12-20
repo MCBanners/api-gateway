@@ -48,7 +48,7 @@ spring:
         - TokenValidationFilter
 
       - id: minecraftService
-        uri: lb//mc-service
+        uri: lb://mc-service
         predicates:
         - Path=/mc/**
         filters:
