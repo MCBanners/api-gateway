@@ -39,10 +39,10 @@ spring:
         predicates:
         - Path=/banner/**
         filters:
+        - TokenValidationFilter
         - StripPrefix=1
         - RemoveRequestHeader=Cookie
         - RemoveRequestHeader=Set-Cookie
-        - TokenValidationFilter
 
       - id: minecraftService
         uri: lb://MC-SERVICE
