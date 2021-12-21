@@ -1,6 +1,5 @@
-package com.mcbanners.apigateway.security.jwt;
+package com.mcbanners.apigateway.security;
 
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
@@ -15,12 +14,12 @@ import javax.crypto.SecretKey;
 public class JwtHandler {
     private JwtParser parser;
 
-    @Value("${security.jwt.uri:/user/**}")
-    private String uri;
     @Value("${security.jwt.header:Authorization}")
     private String header;
+
     @Value("${security.jwt.prefix:Bearer }")
     private String prefix;
+
     @Value("${security.jwt.secret:secret}")
     private String secret;
 
@@ -30,12 +29,8 @@ public class JwtHandler {
         this.parser = Jwts.parserBuilder().setSigningKey(secretKey).build();
     }
 
-    public Claims parse(String token) throws JwtException {
-        return parser.parseClaimsJws(token).getBody();
-    }
-
-    public String getUri() {
-        return uri;
+    public void parse(String token) throws JwtException {
+        parser.parseClaimsJws(token).getBody();
     }
 
     public String getHeader() {

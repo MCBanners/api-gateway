@@ -1,0 +1,61 @@
+server:
+  port: 8100
+
+security:
+  jwt:
+    secret: ${GATEWAY_JWT_SECRET}
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      httpclient:
+        connect-timeout: 30000
+        response-timeout: 10s
+
+      discovery:
+        locator:
+          enabled: true
+
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+            maxAge: 3600
+
+      default-filters:
+        - TokenValidationFilter
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+
+      routes:
+      - id: userService
+        uri: lb://USER-SERVICE
+        predicates:
+        - Path=/user/**
+        filters:
+          - RemoveRequestHeader=Authorization
+          - RemoveRequestHeader=Cookie
+          - RemoveRequestHeader=Set-Cookie
+
+      - id: bannerService
+        uri: lb://BANNER-SERVICE
+        predicates:
+        - Path=/banner/**
+        filters:
+        - StripPrefix=1
+        - RemoveRequestHeader=Cookie
+        - RemoveRequestHeader=Set-Cookie
+
+      - id: minecraftService
+        uri: lb://MC-SERVICE
+        predicates:
+        - Path=/mc/**
+        filters:
+        - StripPrefix=1
+        - RemoveRequestHeader=Authorization
+        - RemoveRequestHeader=Cookie
+        - RemoveRequestHeader=Set-Cookie
