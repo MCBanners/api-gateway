@@ -1,6 +1,5 @@
 package com.mcbanners.apigateway.security;
 
-import com.mcbanners.apigateway.util.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -34,22 +33,17 @@ public class TokenValidationFilter extends AbstractGatewayFilterFactory<Void> {
 
             // if it's a preflight, let it through
             if (req.getMethod() == HttpMethod.OPTIONS) {
-                Log.info("Letting preflight pass through filter!");
                 return pass(exchange, chain);
             }
 
             String path = req.getPath().pathWithinApplication().value();
 
             for (String antPath : ProtectedRoute.getAntPaths()) {
-                Log.info("Token validation checking path %s against %s", path, antPath);
-
                 if (pathMatcher.match(antPath, path)) {
                     // if the accessed path is protected, then we'll validate the token
                     return validateToken(exchange, chain);
                 }
             }
-
-            Log.info("Did not pass request through token validation filter. Passing through.");
 
             // otherwise, we'll just let it through
             return pass(exchange, chain);
