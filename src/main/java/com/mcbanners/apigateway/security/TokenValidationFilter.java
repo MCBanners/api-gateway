@@ -65,7 +65,7 @@ public class TokenValidationFilter extends AbstractGatewayFilterFactory<Void> {
 
         String header = exchange.getRequest().getHeaders().getFirst(jwtHandler.getHeader());
         if (header == null || !header.startsWith(jwtHandler.getPrefix())) {
-            res.setStatusCode(HttpStatus.BAD_REQUEST);
+            res.setStatusCode(HttpStatus.UNAUTHORIZED);
             return res.setComplete();
         }
 
