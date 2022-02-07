@@ -38,10 +38,10 @@ public class TokenValidationFilter extends AbstractGatewayFilterFactory<Void> {
 
             String path = req.getPath().pathWithinApplication().value();
 
-            for (String antPath : ProtectedRoute.getAntPaths()) {
-                if (pathMatcher.match(antPath, path)) {
+            for (ProtectedRoute route : ProtectedRoute.values()) {
+                if (pathMatcher.match(route.getAntPath(), path)) {
                     // if the accessed path is protected, then we'll validate the token
-                    return validateToken(exchange, chain);
+                    return validateToken(exchange, chain, route);
                 }
             }
 
@@ -54,22 +54,29 @@ public class TokenValidationFilter extends AbstractGatewayFilterFactory<Void> {
         return chain.filter(exchange.mutate().request(exchange.getRequest().mutate().build()).build());
     }
 
-    private Mono<Void> validateToken(ServerWebExchange exchange, GatewayFilterChain chain) {
+    private Mono<Void> validateToken(ServerWebExchange exchange, GatewayFilterChain chain, ProtectedRoute route) {
         ServerHttpResponse res = exchange.getResponse();
 
         String header = exchange.getRequest().getHeaders().getFirst(jwtHandler.getHeader());
         if (header == null || !header.startsWith(jwtHandler.getPrefix())) {
-            res.setStatusCode(HttpStatus.UNAUTHORIZED);
-            return res.setComplete();
+            if (!route.isOptional()) {
+                res.setStatusCode(HttpStatus.UNAUTHORIZED);
+                return res.setComplete();
+            }
         }
 
         try {
             // If the token successfully parses, Gateway says good enough. Banner API can decode it downstream to extract
             // more information.
-            jwtHandler.parse(header.replace(jwtHandler.getPrefix(), ""));
-        } catch (Exception ignored) {
-            res.setStatusCode(HttpStatus.UNAUTHORIZED);
-            return res.setComplete();
+            if (header != null) {
+                jwtHandler.parse(header.replace(jwtHandler.getPrefix(), ""));
+            }
+        } catch (Exception ex) {
+            if (!route.isOptional()) {
+                ex.printStackTrace();
+                res.setStatusCode(HttpStatus.UNAUTHORIZED);
+                return res.setComplete();
+            }
         }
 
         return chain.filter(exchange);
