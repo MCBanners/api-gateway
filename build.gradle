@@ -21,7 +21,6 @@ bootJar {
 
 
 repositories {
-	mavenLocal()
 	mavenCentral()
 }
 
