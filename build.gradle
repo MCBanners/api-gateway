@@ -6,12 +6,10 @@ plugins {
 
 group = 'com.mcbanners'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
 
-configurations {
-	developmentOnly
-	runtimeClasspath {
-		extendsFrom developmentOnly
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
 	}
 }
 
