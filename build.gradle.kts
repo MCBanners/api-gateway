@@ -1,5 +1,5 @@
 plugins {
-	id("org.springframework.boot") version "2.7.11"
+	id("org.springframework.boot") version "3.0.6"
 	id("io.spring.dependency-management") version "1.1.0"
 	id("java")
 }
@@ -19,7 +19,7 @@ repositories {
 
 dependencies {
 	// spring cloud BOM
-	implementation(platform("org.springframework.cloud:spring-cloud-dependencies:2021.0.7"))
+	implementation(platform("org.springframework.cloud:spring-cloud-dependencies:2022.0.2"))
 
 	// spring dependencies
 	implementation("org.springframework.cloud:spring-cloud-starter-gateway")
