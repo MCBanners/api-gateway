@@ -1,6 +1,7 @@
 plugins {
-	id("org.springframework.boot") version "3.1.5"
-	id("io.spring.dependency-management") version "1.1.3"
+	id("org.springframework.boot") version "3.2.1"
+	id("io.spring.dependency-management") version "1.1.4"
+	id("com.github.ben-manes.versions") version "0.50.0"
 	id("java")
 }
 
@@ -19,7 +20,7 @@ repositories {
 
 dependencies {
 	// spring cloud BOM
-	implementation(platform("org.springframework.cloud:spring-cloud-dependencies:2022.0.4"))
+	implementation(platform("org.springframework.cloud:spring-cloud-dependencies:2023.0.0"))
 
 	// spring dependencies
 	implementation("org.springframework.cloud:spring-cloud-starter-gateway")
@@ -27,9 +28,9 @@ dependencies {
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 
 	// jwt dependencies
-	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
-	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
-	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+	implementation("io.jsonwebtoken:jjwt-api:0.12.3")
+	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.3")
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.3")
 }
 
 tasks {

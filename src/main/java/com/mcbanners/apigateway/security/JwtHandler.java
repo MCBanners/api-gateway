@@ -26,7 +26,7 @@ public class JwtHandler {
     @PostConstruct
     protected void postConstruct() {
         SecretKey secretKey = Keys.hmacShaKeyFor(secret.getBytes());
-        this.parser = Jwts.parserBuilder().setSigningKey(secretKey).build();
+        this.parser = Jwts.parser().verifyWith(secretKey).build();
     }
 
     public void parse(String token) throws JwtException {
