@@ -20,7 +20,7 @@ repositories {
 
 dependencies {
 	// spring cloud BOM
-	implementation(platform("org.springframework.cloud:spring-cloud-dependencies:2023.0.3"))
+	implementation(platform("org.springframework.cloud:spring-cloud-dependencies:2024.0.1"))
 
 	// spring dependencies
 	implementation("org.springframework.cloud:spring-cloud-starter-gateway")
